@@ -1,0 +1,140 @@
+@use "sass:map";
+@use "sass:list";
+@use "variables" as *;
+@use "functions" as *;
+
+// ============================================
+// CUSTOM SASS MIXINS
+// ============================================
+
+// --------------------------------------------
+// Mixin: respond-to()
+// Media query helper for responsive design
+// Usage: @include respond-to('md') { ... }
+// --------------------------------------------
+@mixin respond-to($breakpoint) {
+  $breakpoints: (
+    'sm': $breakpoint-sm,
+    'md': $breakpoint-md,
+    'lg': $breakpoint-lg,
+    'xl': $breakpoint-xl,
+  );
+
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (width >= #{map.get($breakpoints, $breakpoint)}) {
+      @content;
+    }
+  } @else {
+    @warn 'Breakpoint `#{$breakpoint}` not found. Available: #{map.keys($breakpoints)}';
+  }
+}
+
+// --------------------------------------------
+// Mixin: container()
+// Creates a centered container with max-width
+// Usage: @include container();
+// --------------------------------------------
+@mixin container($max-width: $container-max-width, $padding: $container-padding) {
+  width: 100%;
+  max-width: $max-width;
+  margin: 0 auto;
+  padding-right: $padding;
+  padding-left: $padding;
+}
+
+// --------------------------------------------
+// Mixin: clearfix()
+// Clears floats
+// Usage: @include clearfix();
+// --------------------------------------------
+@mixin clearfix {
+  &::after {
+    display: table;
+    clear: both;
+    content: "";
+  }
+}
+
+// --------------------------------------------
+// Mixin: visually-hidden()
+// Hides element visually but keeps it accessible
+// Usage: @include visually-hidden();
+// --------------------------------------------
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+// --------------------------------------------
+// Mixin: transition()
+// Simplified transition helper
+// Usage: @include transition(color);
+// --------------------------------------------
+@mixin transition($properties...) {
+  $transitions: ();
+
+  @each $property in $properties {
+    $transitions: list.append($transitions, $property $transition-normal $transition-ease-in-out, comma);
+  }
+
+  transition: $transitions;
+}
+
+// --------------------------------------------
+// Mixin: aspect-ratio()
+// Creates aspect ratio box
+// Usage: @include aspect-ratio(16, 9);
+// --------------------------------------------
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+
+  &::before {
+    display: block;
+    width: 100%;
+    padding-top: calc(($height / $width) * 100%);
+    content: "";
+  }
+
+  > * {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+// --------------------------------------------
+// Mixin: truncate()
+// Truncates text with ellipsis
+// Usage: @include truncate();
+// --------------------------------------------
+@mixin truncate($lines: 1) {
+  @if $lines == 1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+  }
+}
+
+// --------------------------------------------
+// Mixin: focus-outline()
+// Accessible focus outline
+// Usage: @include focus-outline();
+// --------------------------------------------
+@mixin focus-outline($color: $color-primary, $offset: 2px) {
+  outline: 2px solid $color;
+  outline-offset: $offset;
+}

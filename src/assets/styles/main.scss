@@ -1,0 +1,28 @@
+/**
+ * TOKYO WEBSITE - MAIN SCSS FILE
+ */
+
+/**
+ * 1. Dependencies (External libraries)
+ */
+@use "dependencies";
+
+/**
+ * 2. Base (Reset, global styles)
+ */
+@use "base/reset";
+
+/**
+ * 3. Components (Reusable UI components with BEM)
+ */
+@use "components/button";
+@use "components/card";
+@use "components/gallery";
+@use "components/info-card";
+
+/**
+ * 4. Layouts (Page-specific layouts)
+ */
+@use "layouts/tokyo";
+
+

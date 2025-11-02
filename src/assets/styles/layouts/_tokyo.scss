@@ -1,0 +1,173 @@
+@use "../variables" as *;
+@use "../functions" as *;
+@use "../mixins" as *;
+
+// ============================================
+// LAYOUT: Tokyo Page (BEM)
+// ============================================
+
+// --------------------------------------------
+// Hero Section
+// --------------------------------------------
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600");
+  background-position: center;
+  background-size: cover;
+  color: $color-white;
+
+  // Element: Overlay
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+
+  // Element: Content
+  &__content {
+    position: relative;
+    z-index: get-z-index('dropdown');
+    max-width: 800px;
+    padding: $spacing-lg;
+    text-align: center;
+  }
+
+  // Element: Title
+  &__title {
+    margin-bottom: $spacing-md;
+    font-size: fluid-size(40px, 72px);
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  // Element: Subtitle
+  &__subtitle {
+    margin-bottom: $spacing-xl;
+    font-size: fluid-size(18px, 24px);
+    font-weight: $font-weight-normal;
+    line-height: $line-height-normal;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  // Element: CTA
+  &__cta {
+    display: inline-block;
+  }
+}
+
+// --------------------------------------------
+// Main Content
+// --------------------------------------------
+.main {
+  position: relative;
+}
+
+// --------------------------------------------
+// Section (Reusable)
+// --------------------------------------------
+.section {
+  padding: $spacing-xxl 0;
+
+  @include respond-to('md') {
+    padding: $spacing-xxxl 0;
+  }
+
+  // Element: Container
+  &__container {
+    @include container();
+  }
+
+  // Element: Title
+  &__title {
+    margin-bottom: $spacing-lg;
+    font-size: fluid-size(32px, 48px);
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+    color: $color-text-primary;
+    text-align: center;
+
+    // Modifier: Light text
+    &--light {
+      color: $color-white;
+    }
+  }
+
+  // Element: Content wrapper
+  &__content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  // Element: Text
+  &__text {
+    margin-bottom: $spacing-md;
+    font-size: $font-size-base;
+    line-height: $line-height-relaxed;
+    color: $color-text-secondary;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    // Modifier: Light text
+    &--light {
+      color: $color-white;
+    }
+
+    // Modifier: Large text
+    &--large {
+      font-size: $font-size-large;
+      text-align: center;
+
+      @include respond-to('md') {
+        font-size: $font-size-xlarge;
+      }
+    }
+  }
+
+  // Modifier: Light background
+  &--light {
+    background-color: $color-bg-light;
+  }
+
+  // Modifier: Dark background
+  &--dark {
+    background-color: $color-bg-dark;
+  }
+
+  // Modifier: Gallery section
+  &--gallery {
+    background-color: $color-white;
+  }
+
+  // Modifier: Info section
+  &--info {
+    background-color: $color-bg-light;
+  }
+
+  // Modifier: CTA section
+  &--cta {
+    padding: $spacing-xxxl 0;
+    text-align: center;
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+
+    .section__container {
+      max-width: 700px;
+    }
+  }
+}

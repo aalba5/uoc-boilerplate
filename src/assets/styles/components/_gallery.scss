@@ -1,0 +1,66 @@
+@use "../variables" as *;
+@use "../functions" as *;
+
+// ============================================
+// COMPONENT: Gallery (BEM with Swiper)
+// ============================================
+
+.c-gallery {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+
+  // Swiper customization
+  .swiper {
+    width: 100%;
+    height: 600px;
+    border-radius: $border-radius-lg;
+    box-shadow: $shadow-lg;
+  }
+
+  .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $color-secondary;
+    height: 100%;
+  }
+
+  // Element: Gallery image
+  &__image {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+  }
+
+  // Customize navigation buttons
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: $color-white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: $border-radius-full;
+    padding: $spacing-md;
+    width: 44px;
+    height: 44px;
+
+    &::after {
+      font-size: $font-size-large;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  // Customize pagination
+  .swiper-pagination-bullet {
+    background-color: $color-white;
+    opacity: 0.5;
+
+    &-active {
+      background-color: $color-primary;
+      opacity: 1;
+    }
+  }
+}

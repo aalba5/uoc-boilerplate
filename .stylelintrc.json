@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "stylelint-config-recommended-scss"
+  ],
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "color-hex-length": "short",
+    "selector-class-pattern": "^(?:(o|c|u|t|s|is|has|_)[-a-z0-9_]+?|)[a-z0-9]([-a-z0-9_]+?)(?:--[-a-z0-9_]+?)?$",
+    "max-nesting-depth": 3,
+    "declaration-block-no-duplicate-properties": true,
+    "scss/load-partial-extension": "never"
+  }
+}

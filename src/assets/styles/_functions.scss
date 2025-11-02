@@ -1,0 +1,111 @@
+@use "sass:math";
+@use "sass:map";
+@use "sass:color";
+@use "variables" as *;
+
+// ============================================
+// CUSTOM SASS FUNCTIONS
+// ============================================
+
+// --------------------------------------------
+// Function: rem()
+// Converts pixel values to rem units
+// Usage: font-size: rem(16);
+// --------------------------------------------
+@function rem($pixels, $base: 16) {
+  @if math.is-unitless($pixels) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if math.is-unitless($base) {
+    $base: $base * 1px;
+  }
+
+  @return math.div($pixels, $base) * 1rem;
+}
+
+// --------------------------------------------
+// Function: fluid-size()
+// Creates fluid typography/spacing between min and max viewport widths
+// Usage: font-size: fluid-size(16px, 24px, 320px, 1200px);
+// --------------------------------------------
+@function fluid-size($min-size, $max-size, $min-vw: 320px, $max-vw: 1200px) {
+  // Strip units for calculations
+  $min-size-unitless: math.div($min-size, ($min-size * 0 + 1));
+  $max-size-unitless: math.div($max-size, ($max-size * 0 + 1));
+  $min-vw-unitless: math.div($min-vw, ($min-vw * 0 + 1));
+  $max-vw-unitless: math.div($max-vw, ($max-vw * 0 + 1));
+
+  $min-size-rem: math.div($min-size-unitless, 16) * 1rem;
+  $max-size-rem: math.div($max-size-unitless, 16) * 1rem;
+
+  $slope: math.div(($max-size-unitless - $min-size-unitless), ($max-vw-unitless - $min-vw-unitless));
+  $y-axis-intersection: -1 * $min-vw-unitless * $slope + $min-size-unitless;
+
+  @return clamp(
+    $min-size-rem,
+    calc(#{$y-axis-intersection * 0.0625}rem + #{$slope * 100}vw),
+    $max-size-rem
+  );
+}
+
+// --------------------------------------------
+// Function: spacing()
+// Calculates spacing based on the spacing unit
+// Usage: padding: spacing(3); // Returns 24px (8px * 3)
+// --------------------------------------------
+@function spacing($multiplier) {
+  @return $spacing-unit * $multiplier;
+}
+
+// --------------------------------------------
+// Function: get-z-index()
+// Returns z-index value from predefined scale
+// Usage: z-index: get-z-index('modal');
+// --------------------------------------------
+@function get-z-index($layer) {
+  $z-indexes: (
+    'dropdown': $z-index-dropdown,
+    'sticky': $z-index-sticky,
+    'fixed': $z-index-fixed,
+    'modal-backdrop': $z-index-modal-backdrop,
+    'modal': $z-index-modal,
+    'popover': $z-index-popover,
+    'tooltip': $z-index-tooltip,
+  );
+
+  @if map.has-key($z-indexes, $layer) {
+    @return map.get($z-indexes, $layer);
+  }
+
+  @warn 'Z-index layer `#{$layer}` not found. Available layers: #{map.keys($z-indexes)}';
+  @return 0;
+}
+
+// --------------------------------------------
+// Function: strip-unit()
+// Removes the unit from a value
+// Usage: strip-unit(16px); // Returns 16
+// --------------------------------------------
+@function strip-unit($value) {
+  @return math.div($value, ($value * 0 + 1));
+}
+
+// --------------------------------------------
+// Function: contrast-color()
+// Returns black or white depending on background color for contrast
+// Usage: color: contrast-color(#e60012);
+// --------------------------------------------
+@function contrast-color($background-color, $light: $color-white, $dark: $color-secondary) {
+  $red: color.red($background-color);
+  $green: color.green($background-color);
+  $blue: color.blue($background-color);
+
+  $yiq: math.div((($red * 299) + ($green * 587) + ($blue * 114)), 1000);
+
+  @if $yiq >= 128 {
+    @return $dark;
+  } @else {
+    @return $light;
+  }
+}
